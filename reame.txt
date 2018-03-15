@@ -1,0 +1,166 @@
+The concept of zero configuration in webpack 4 applies to:
+
+the entry point. Default to ./src/index.js
+the output. Default to ./dist/main.js
+production and development mode (no need to create 2 separate confs for production and development)
+
+
+---webpack 4 as a zero configuration module bundler---
+
+npm init -y
+npm i webpack webpack-cli --save-dev
+
+package.json 
+"scripts": {
+  "build": "webpack"
+}
+
+進入點
+./src/index.js
+console.log(`I'm a silly entry point`);
+
+npm run build
+
+
+---webpack 4: production and development mode---
+
+package.json 
+"scripts": {
+  "dev": "webpack --mode development",
+  "build": "webpack --mode production"
+}
+
+npm run dev
+npm run build
+
+---webpack 4: overriding the defaults entry/output---
+
+package.json 
+"scripts": {
+  "dev": "webpack --mode development ./foo/src/js/index.js --output ./foo/main.js",
+  "build": "webpack --mode production ./foo/src/js/index.js --output ./foo/main.js"
+}
+
+---webpack 4: transpiling Javascript ES6 with Babel---
+
+npm i babel-core babel-loader babel-preset-env --save-dev
+.babelrc 
+{
+    "presets": [
+        "env"
+    ]
+}
+
+這版(4.0)還做不到完全不用設定檔
+webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      }
+    ]
+  }
+};
+
+./src/index.js
+
+const arr = [1, 2, 3];
+const iAmJavascriptES6 = () => console.log(...arr);
+window.iAmJavascriptES6 = iAmJavascriptES6;
+
+npm run dev
+
+---webpack 4: setting up webpack 4 with React---
+
+npm i react react-dom babel-preset-react --save-dev
+
+.babelrc 
+{
+  "presets": ["env", "react"]
+}
+
+./src/App.js
+import React from "react";
+import ReactDOM from "react-dom";
+const App = () => {
+  return (
+    <div>
+      <p>React here!</p>
+    </div>
+  );
+};
+export default App;
+ReactDOM.render(<App />, document.getElementById("app"));
+
+./src/index.js
+import App from "./App";
+
+npm run dev
+
+---webpack 4: the HTML webpack plugin---
+
+npm i html-webpack-plugin html-loader --save-dev
+
+webpack.config.js
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader",
+            options: { minimize: true }
+          }
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: "./src/index.html",
+      filename: "./index.html"
+    })
+  ]
+};
+
+./src/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>webpack 4 quickstart</title>
+</head>
+<body>
+    <div id="app">
+    </div>
+</body>
+</html>
+
+npm run dev
+check ./dist/index.html on Browser
+
+---webpack 4 : the webpack dev server---
+
+npm i webpack-dev-server --save-dev
+
+webpack.config.js
+"scripts": {
+  "start": "webpack-dev-server --mode development --open",
+  "build": "webpack --mode production"
+}
+
+npm run start

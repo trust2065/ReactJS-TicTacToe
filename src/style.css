@@ -1,0 +1,57 @@
+body {
+  font: 16px "Century Gothic", Futura, sans-serif;
+  margin: 20px;
+}
+
+.square {
+	/*background-color: black;*/
+	height: 50px;
+	width: 50px;
+	font-size: 30px;
+	font-weight: bold;
+	float: left;
+	border: 1px solid #999;
+	line-height: 40px;
+	margin: 0 -1px -1px 0;
+	cursor: pointer;
+	text-align: center;
+}
+.square:focus {
+	outline:0;
+}
+
+.squareRow::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.game {
+  	display: flex;
+  	flex-direction: row;
+}
+.gameInfo {
+	margin-left: 50px;
+}
+
+.winClass {
+	background-color: gray;
+}
+
+.movesOrder {
+	padding-top: 20px;
+}
+
+.despMove {
+	padding-left: 10px;
+}
+
+.desp {
+	min-width: 120px;
+	padding: 5px;
+	margin-bottom: 8px;
+}
+
+.strong {
+	font-weight: 700;
+}
+/*# sourceMappingURL=style.css.map */
